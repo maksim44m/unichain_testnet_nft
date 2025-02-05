@@ -3,9 +3,8 @@ import sys
 from loguru import logger
 from pathlib import Path
 
-pk = ''
-seed = ''
-proxy = ''  # 'http://login:password@host:port'
+
+# proxy='http://login:password@host:port'
 
 nft = {'Unichain Alien (UA)': '0xAdE5aE3e71ff1E6D1E1e849d18A4DF27189a61be',
        'OROCHIMARU': '0x87787cAacb6b928eb122D761eF1424217552Ac5F',

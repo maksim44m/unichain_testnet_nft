@@ -1,13 +1,16 @@
+import os
 from random import randint
 from time import sleep
 
-from utils.config import logger, proxy, nft, pk, seed
+from dotenv import load_dotenv
+
+from utils.config import logger, nft
 from onchain import Onchain
 
 
 def sepolia_bridge():
     sepolia = Onchain(rpc='https://1rpc.io/sepolia',  # 'https://ethereum-sepolia-rpc.publicnode.com'
-                      pk=pk, proxy=proxy)
+                      seed=os.getenv('seed'), pk=os.getenv('pk'), proxy=os.getenv('proxy'))
 
     min_gas_limit = 200000
     extra_data_bytes = bytes.fromhex('7375706572627269646765')
@@ -26,7 +29,7 @@ def sepolia_bridge():
 
 def unichain_claim(contract_address: str):
     unichain = Onchain(rpc='https://1301.rpc.thirdweb.com/',  # 'https://sepolia.unichain.org/'
-                       pk=pk, proxy=proxy)
+                       seed=os.getenv('seed'), pk=os.getenv('pk'), proxy=os.getenv('proxy'))
 
     balance = unichain.get_balance()
     for i in range(10):
@@ -60,6 +63,7 @@ def unichain_claim(contract_address: str):
 
 
 def main():
+    load_dotenv()
     sepolia_bridge()
     unichain_claim(nft['OROCHIMARU'])
 
