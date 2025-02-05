@@ -1,11 +1,11 @@
-import asyncio
 from random import randint
+from time import sleep
 
 from utils.config import logger, proxy, nft, pk, seed
-from onchain_io import Onchain
+from onchain import Onchain
 
 
-async def sepolia_bridge():
+def sepolia_bridge():
     sepolia = Onchain(rpc='https://1rpc.io/sepolia',  # 'https://ethereum-sepolia-rpc.publicnode.com'
                       pk=pk, proxy=proxy)
 
@@ -16,24 +16,24 @@ async def sepolia_bridge():
     contract_address = '0xea58fcA6849d79EAd1f26608855c2D6407d54Ce2'
     contract_abi = 'L1StandardBridge.json'
     func = "bridgeETHTo"
-    resp = await sepolia.send_transaction_with_abi(contract_address=contract_address,
-                                                   amount=0.001,
-                                                   abi=contract_abi,
-                                                   function=func,
-                                                   data=raw_data)
+    resp = sepolia.send_transaction_with_abi(contract_address=contract_address,
+                                             amount=0.001,
+                                             abi=contract_abi,
+                                             function=func,
+                                             data=raw_data)
     logger.info(f'sepolia_bridge: {resp}')
 
 
-async def unichain_claim(contract_address: str):
+def unichain_claim(contract_address: str):
     unichain = Onchain(rpc='https://1301.rpc.thirdweb.com/',  # 'https://sepolia.unichain.org/'
                        pk=pk, proxy=proxy)
 
-    balance = await unichain.get_balance()
+    balance = unichain.get_balance()
     for i in range(10):
         if balance >= 0.00001:
             break
-        await asyncio.sleep(randint(3, 5))
-        balance = await unichain.get_balance()
+        sleep(randint(3, 5))
+        balance = unichain.get_balance()
 
     receiver = unichain.address
     quantity = 1
@@ -52,17 +52,17 @@ async def unichain_claim(contract_address: str):
     contract_abi = 'OpenEditionERC721.json'
     func = "claim"
 
-    resp = await unichain.send_transaction_with_abi(contract_address=contract_address,
-                                                    abi=contract_abi,
-                                                    function=func,
-                                                    data=raw_data)
+    resp = unichain.send_transaction_with_abi(contract_address=contract_address,
+                                              abi=contract_abi,
+                                              function=func,
+                                              data=raw_data)
     logger.info(f'unichain_claim: {resp}')
 
 
-async def main():
-    await sepolia_bridge()
-    await unichain_claim(nft['OROCHIMARU'])
+def main():
+    sepolia_bridge()
+    unichain_claim(nft['OROCHIMARU'])
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
