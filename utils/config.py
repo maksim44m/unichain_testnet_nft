@@ -3,13 +3,12 @@ import sys
 from loguru import logger
 from pathlib import Path
 
-
 # proxy='http://login:password@host:port'
 
-nft = {'Unichain Alien (UA)': '0xAdE5aE3e71ff1E6D1E1e849d18A4DF27189a61be',
-       'OROCHIMARU': '0x87787cAacb6b928eb122D761eF1424217552Ac5F',
-       'Europa': '0x2188DA4AE1CAaFCf2fBFb3ef34227F3FFdc46AB6',
-       'Unicorn': '0x99F4146B950Ec5B8C6Bc1Aa6f6C9b14b6ADc6256'}
+nft_contracts = {'Unichain Alien (UA)': '0xAdE5aE3e71ff1E6D1E1e849d18A4DF27189a61be',
+                 'OROCHIMARU': '0x87787cAacb6b928eb122D761eF1424217552Ac5F',
+                 'Europa': '0x2188DA4AE1CAaFCf2fBFb3ef34227F3FFdc46AB6',
+                 'Unicorn': '0x99F4146B950Ec5B8C6Bc1Aa6f6C9b14b6ADc6256'}
 
 DATADIR = Path(__file__).resolve().parent.parent / "data"
 LOGSDIR = Path(__file__).resolve().parent.parent / "data" / "logs"

@@ -42,8 +42,9 @@ class Amount(BaseModel):
 
 class Onchain:
     def __init__(self, rpc: str, seed: str = None, pk: str = None, proxy: str = None):
+        proxies = {'http': proxy, 'https': proxy}
         self.w3 = Web3(provider=Web3.HTTPProvider(
-            endpoint_uri=rpc, request_kwargs={'proxy': proxy}))
+            endpoint_uri=rpc, request_kwargs={'proxies': proxies}))
         if pk:
             self.pk = pk
         elif not pk and seed:

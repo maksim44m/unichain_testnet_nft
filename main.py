@@ -4,7 +4,7 @@ from time import sleep
 
 from dotenv import load_dotenv
 
-from utils.config import logger, nft
+from utils.config import logger, nft_contracts
 from onchain import Onchain
 
 
@@ -38,6 +38,9 @@ def unichain_claim(contract_address: str):
         sleep(randint(3, 5))
         balance = unichain.get_balance()
 
+    if balance < 0.00001:
+        raise 'На счете недостаточно средств'
+
     receiver = unichain.address
     quantity = 1
     currency = unichain.to_checksum('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
@@ -65,7 +68,8 @@ def unichain_claim(contract_address: str):
 def main():
     load_dotenv()
     sepolia_bridge()
-    unichain_claim(nft['OROCHIMARU'])
+    for nft in nft_contracts.values():
+        unichain_claim(nft)
 
 
 if __name__ == '__main__':
